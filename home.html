@@ -1,0 +1,70 @@
+<div class="container page-animate">
+    <!-- Vibrant Hero Banner -->
+    <div class="hero-banner mt-2" ng-if="!homeCtrl.isLoading">
+        <h1 class="hero-title">Groceries in 10 minutes</h1>
+        <p class="hero-subtitle">Fresh produce and daily essentials delivered right to your door.</p>
+        
+        <!-- Search Bar -->
+        <div class="search-container">
+            <i class="fa-solid fa-search search-icon"></i>
+            <input type="text" class="search-input" placeholder="Search for 'Milk', 'Apple', 'Chips'..." ng-model="homeCtrl.searchQuery">
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading-state text-center mt-4 mb-4" ng-if="homeCtrl.isLoading" style="padding: 120px 0;">
+        <i class="fa-solid fa-circle-notch fa-spin fa-4x" style="color: var(--primary);"></i>
+        <p class="mt-3 text-muted" style="font-size: 1.2rem; font-weight: 600;">Loading fresh catalog...</p>
+    </div>
+
+    <!-- Main Content -->
+    <div class="store-layout" ng-if="!homeCtrl.isLoading">
+        
+        <!-- Horizontal Category Pills -->
+        <div class="category-pills">
+            <div class="category-pill" 
+                ng-repeat="category in homeCtrl.categories" 
+                ng-class="{ 'active': homeCtrl.selectedCategory === category }"
+                ng-click="homeCtrl.selectCategory(category)">
+                {{ category }}
+            </div>
+        </div>
+
+        <!-- Product Grid -->
+        <section class="products-section pb-4">
+            <div class="section-header flex justify-between align-center mb-4">
+                <h2>{{ homeCtrl.selectedCategory === 'All' ? (homeCtrl.searchQuery ? 'Search Results' : 'Trending Now') : homeCtrl.selectedCategory }}</h2>
+                <span class="text-muted">{{ (homeCtrl.products | filter: homeCtrl.filterProducts).length }} items</span>
+            </div>
+
+            <div class="product-grid">
+                <div class="product-card" ng-repeat="product in homeCtrl.products | filter: homeCtrl.filterProducts">
+                    <div class="product-image-container">
+                        <img ng-src="{{ product.image }}" alt="{{ product.name }}" loading="lazy">
+                        <div class="badge" ng-if="product.recommended"><i class="fa-solid fa-star"></i> Top Pick</div>
+                        <div class="speed-tag"><i class="fa-solid fa-bolt"></i> 10 MINS</div>
+                    </div>
+                    <div class="product-details">
+                        <span class="product-category">{{ product.category }}</span>
+                        <h3 class="product-name">{{ product.name }}</h3>
+                        <div class="product-bottom mt-3">
+                            <span class="product-price">${{ product.price | number:2 }}</span>
+                            <button class="add-btn" ng-click="homeCtrl.addToCart(product)" ng-class="{ 'added': product.added }">
+                                <span ng-if="!product.added">ADD</span>
+                                <span ng-if="product.added"><i class="fa-solid fa-check"></i></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Empty State for Search -->
+            <div class="empty-state text-center mt-4" ng-if="(homeCtrl.products | filter: homeCtrl.filterProducts).length === 0" style="padding: 80px 0;">
+                <i class="fa-solid fa-basket-shopping fa-5x text-muted mb-3" style="opacity: 0.5;"></i>
+                <h3 style="font-size: 2rem;">No products found</h3>
+                <p class="text-muted mt-2" style="font-size: 1.2rem;">We couldn't find what you're looking for.</p>
+                <button class="btn-primary mt-4" ng-click="homeCtrl.searchQuery = ''; homeCtrl.selectedCategory = 'All'">Clear Filters</button>
+            </div>
+        </section>
+    </div>
+</div>

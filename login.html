@@ -1,0 +1,35 @@
+<div class="container page-animate d-flex justify-center align-center" style="min-height: calc(100vh - 150px); display: flex; align-items: center; justify-content: center;">
+    <div class="card auth-card" style="width: 100%; max-width: 450px; padding: 40px;">
+        <div class="text-center mb-4">
+            <h1 style="color: var(--primary); font-size: 2rem; margin-bottom: 5px;"><i class="fa-solid fa-bolt"></i> QuickCom</h1>
+            <p class="text-muted">Welcome back! Please login.</p>
+        </div>
+        
+        <div class="alert alert-error" ng-if="authCtrl.errorMessage" style="background: rgba(239, 68, 68, 0.1); color: var(--error); padding: 12px; border-radius: var(--radius-sm); margin-bottom: 20px; font-size: 0.9rem;">
+            <i class="fa-solid fa-circle-exclamation"></i> {{ authCtrl.errorMessage }}
+        </div>
+        
+        <form name="loginForm" ng-submit="authCtrl.login()" novalidate>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" class="form-control" ng-model="authCtrl.user.email" required placeholder="john@example.com">
+                <span class="error-text" ng-show="loginForm.email.$invalid && loginForm.email.$touched">Please enter a valid email.</span>
+            </div>
+            
+            <div class="form-group mb-4">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control" ng-model="authCtrl.user.password" required minlength="6" placeholder="Enter password (min 6 char)">
+                <span class="error-text" ng-show="loginForm.password.$invalid && loginForm.password.$touched">Password must be at least 6 characters.</span>
+            </div>
+            
+            <button type="submit" class="btn-primary" style="width: 100%;" ng-disabled="loginForm.$invalid || authCtrl.isLoading">
+                <span ng-if="!authCtrl.isLoading">Login</span>
+                <span ng-if="authCtrl.isLoading"><i class="fa-solid fa-circle-notch fa-spin"></i> Logging in...</span>
+            </button>
+        </form>
+        
+        <div class="text-center mt-4">
+            <p class="text-muted text-sm">Don't have an account? <a href="#!/register" style="color: var(--primary); font-weight: 600;">Sign up</a></p>
+        </div>
+    </div>
+</div>

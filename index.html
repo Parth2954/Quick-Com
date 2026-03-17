@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="quickCommerceApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickCom - Groceries in 10 Minutes</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- AngularJS (1.x) Core & Routing -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular-route.min.js"></script>
+    
+    <!-- App Scripts -->
+    <script src="app.js"></script>
+    
+    <!-- Services -->
+    <script src="services/auth.service.js"></script>
+    <script src="services/cart.service.js"></script>
+    <script src="services/product.service.js"></script>
+    
+    <!-- Controllers -->
+    <script src="controllers/main.controller.js"></script>
+    <script src="controllers/home.controller.js"></script>
+    <script src="controllers/cart.controller.js"></script>
+    <script src="controllers/auth.controller.js"></script>
+    <script src="controllers/checkout.controller.js"></script>
+</head>
+<body ng-controller="MainController as mainCtrl">
+    
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#!/home" class="logo">
+                <i class="fa-solid fa-bolt"></i> QuickCom
+            </a>
+            
+            <div class="nav-links">
+                <!-- User logged in -->
+                <div class="user-menu" ng-if="mainCtrl.isLoggedIn()">
+                    <span><i class="fa-regular fa-user"></i> Hi, {{ mainCtrl.currentUser().name }}</span>
+                    <button class="btn-text" ng-click="mainCtrl.logout()">Logout</button>
+                </div>
+                
+                <!-- User logged out -->
+                <div class="user-menu" ng-if="!mainCtrl.isLoggedIn()">
+                    <a href="#!/login" class="btn-text">Login</a>
+                    <a href="#!/register" class="btn-primary-small">Sign Up</a>
+                </div>
+                
+                <!-- Cart -->
+                <a href="#!/cart" class="cart-btn">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="cart-badge" ng-if="mainCtrl.cartCount() > 0">{{ mainCtrl.cartCount() }}</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content injected by ngRoute -->
+    <main class="main-content">
+        <div ng-view class="view-animate"></div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 QuickCom. 10-Minute Grocery Delivery SPA.</p>
+    </footer>
+    
+</body>
+</html>
